@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UUa-r4-lYL" customClass="WSYImageView">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="Hbb-p7-rkT"/>
+                                    <constraint firstAttribute="width" constant="300" id="g76-ac-bbl"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Hbb-p7-rkT"/>
+                                        <exclude reference="g76-ac-bbl"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ky-X0-hAh">
+                                <rect key="frame" x="265" y="476" width="70" height="44"/>
+                                <color key="backgroundColor" red="0.29803921570000003" green="0.68627450980000004" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="RCb-NI-82z"/>
+                                    <constraint firstAttribute="width" constant="70" id="ddM-Vf-82J"/>
+                                </constraints>
+                                <state key="normal" title="  Change  ">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="tap:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="fle-sa-QX7"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="5Ky-X0-hAh" secondAttribute="bottom" constant="80" id="0hq-dj-Aut"/>
+                            <constraint firstAttribute="trailing" secondItem="UUa-r4-lYL" secondAttribute="trailing" id="3XI-se-7j2"/>
+                            <constraint firstAttribute="centerX" secondItem="UUa-r4-lYL" secondAttribute="centerX" id="5oR-ZU-7j3"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="UUa-r4-lYL" secondAttribute="bottom" id="9vf-Ba-cXC"/>
+                            <constraint firstItem="UUa-r4-lYL" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="Ktr-LC-DjO"/>
+                            <constraint firstAttribute="centerX" secondItem="5Ky-X0-hAh" secondAttribute="centerX" id="jDU-yN-5x8"/>
+                            <constraint firstItem="UUa-r4-lYL" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="l9Z-ul-eOJ"/>
+                            <constraint firstItem="5Ky-X0-hAh" firstAttribute="top" secondItem="UUa-r4-lYL" secondAttribute="bottom" id="lca-uj-dHZ"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="lca-uj-dHZ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="img1" destination="UUa-r4-lYL" id="SEc-hh-apd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
