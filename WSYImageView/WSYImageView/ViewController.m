@@ -14,13 +14,14 @@
 @end
 
 @implementation ViewController
-
+{
+    BOOL change;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [_img1 setWSImageViewContentMode:UIViewContentModeScaleAspectFill];
-    [_img1 setImageWithImageName:@"tu4.jpg"];
-    
+    [_img1 setAlwaysAnimation:NO];
+    [_img1 ws_setImageWithImageName:@[@"tu4.jpg", @"tu5.jpg", @"tu6.jpg", @"tu8.jpg"][arc4random()%4] placeholderImage:[UIImage imageNamed:@"tu8.jpg"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,7 +30,8 @@
 }
 
 - (IBAction)tap:(id)sender {
-    [_img1 setImageWithImageName:@[@"tu4.jpg", @"tu5.jpg", @"tu6.jpg", @"tu8.jpg"][arc4random()%4]];
+    [_img1 ws_setImageWithImageName:@[@"tu4.jpg", @"tu5.jpg", @"tu6.jpg", @"tu8.jpg"][change ? 1 : 0] placeholderImage:[UIImage imageNamed:@"tu8.jpg"]];
+    change = !change;
 }
 
 @end

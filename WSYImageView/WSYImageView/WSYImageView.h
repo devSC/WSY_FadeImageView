@@ -10,11 +10,15 @@
 
 @interface WSYImageView : UIView
 
-- (void)setImageWithUrlString: (NSString *)urlString;
-- (void)setWSImageViewContentMode:(UIViewContentMode)contentMode;
-- (void)setImageWithImageName: (NSString *)name;
-- (void)setImage: (UIImage *)image;
+@property (assign, nonatomic) NSInteger duration; //default is 0.3
+@property (assign, nonatomic) NSInteger blurRadius; //default is 1
+@property (assign, nonatomic) UIViewContentMode imageViewContentModel; //default is UIViewContentModeScaleAspectFill
+@property (assign, nonatomic) BOOL alwaysAnimation; //default is no just for first set
 
-- (void)setDefaultImageWithImageName: (NSString *)name;
-- (void)setDefaultImage: (UIImage *)image;
+- (void)ws_setImageWithUrlString:(NSString *)urlString placeholderImage: (UIImage *)placeholder;
+- (void)ws_setImageWithImageName: (NSString *)name placeholderImage: (UIImage *)placeholder;
+
 @end
+
+
+

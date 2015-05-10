@@ -21,7 +21,7 @@
 		FEE2EDC71AFE528F0060AC95 /* tu4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC21AFE528F0060AC95 /* tu4.jpg */; };
 		FEE2EDC81AFE528F0060AC95 /* tu5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC31AFE528F0060AC95 /* tu5.jpg */; };
 		FEE2EDC91AFE528F0060AC95 /* tu6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC41AFE528F0060AC95 /* tu6.jpg */; };
-		FEE2EDCA1AFE528F0060AC95 /* tu6.png in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC51AFE528F0060AC95 /* tu6.png */; };
+		FEE2EDCA1AFE528F0060AC95 /* tu7.png in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC51AFE528F0060AC95 /* tu7.png */; };
 		FEE2EDCB1AFE528F0060AC95 /* tu8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC61AFE528F0060AC95 /* tu8.jpg */; };
 /* End PBXBuildFile section */
 
@@ -57,7 +57,7 @@
 		FEE2EDC21AFE528F0060AC95 /* tu4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu4.jpg; sourceTree = "<group>"; };
 		FEE2EDC31AFE528F0060AC95 /* tu5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu5.jpg; sourceTree = "<group>"; };
 		FEE2EDC41AFE528F0060AC95 /* tu6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu6.jpg; sourceTree = "<group>"; };
-		FEE2EDC51AFE528F0060AC95 /* tu6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tu6.png; sourceTree = "<group>"; };
+		FEE2EDC51AFE528F0060AC95 /* tu7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tu7.png; sourceTree = "<group>"; };
 		FEE2EDC61AFE528F0060AC95 /* tu8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu8.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,7 +114,7 @@
 				FEE2EDC21AFE528F0060AC95 /* tu4.jpg */,
 				FEE2EDC31AFE528F0060AC95 /* tu5.jpg */,
 				FEE2EDC41AFE528F0060AC95 /* tu6.jpg */,
-				FEE2EDC51AFE528F0060AC95 /* tu6.png */,
+				FEE2EDC51AFE528F0060AC95 /* tu7.png */,
 				FEE2EDC61AFE528F0060AC95 /* tu8.jpg */,
 				FEE2EDB61AFE2EF50060AC95 /* Categories */,
 				FEE2ED9B1AFE2D510060AC95 /* LaunchScreen.xib */,
@@ -246,7 +246,7 @@
 				FEE2EDC91AFE528F0060AC95 /* tu6.jpg in Resources */,
 				FEE2ED9A1AFE2D510060AC95 /* Images.xcassets in Resources */,
 				FEE2EDC71AFE528F0060AC95 /* tu4.jpg in Resources */,
-				FEE2EDCA1AFE528F0060AC95 /* tu6.png in Resources */,
+				FEE2EDCA1AFE528F0060AC95 /* tu7.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +462,7 @@
 				FEE2EDAE1AFE2D510060AC95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FEE2EDAF1AFE2D510060AC95 /* Build configuration list for PBXNativeTarget "WSYImageViewTests" */ = {
 			isa = XCConfigurationList;
@@ -470,6 +471,7 @@
 				FEE2EDB11AFE2D510060AC95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
