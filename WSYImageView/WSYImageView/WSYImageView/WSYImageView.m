@@ -461,8 +461,6 @@
 {
     if (_imageName != imageName) {
         _imageName = imageName;
-    
-        dispatch_group_wait(<#dispatch_group_t group#>, <#dispatch_time_t timeout#>)
         [self setImage:[UIImage imageNamed:imageName] animation:YES storeKey:imageName];
     }else {
         UIImage *image = [[WSYImageCache sharedImageCache] imageWithUrl:imageName];
@@ -486,7 +484,7 @@
                     [self setImage:image animation:YES storeKey:imageUrl];
                 }
             }else {
-                [self setImage:image animation:_alwaysAnimation storeKey:imageUrl];
+                [self setImage:image animation:YES storeKey:imageUrl];
             }
         });
     }else {
@@ -520,7 +518,6 @@
                     [[WSYImageCache sharedImageCache] storeImage:bluredImage forKey:key];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
                         [self.backImageView setAlpha:1.0];
                         [self.foreImageView setAlpha:0.0];
                         [self.backImageView setImage:self.foreImageView.image];
@@ -551,7 +548,6 @@
     self.alwaysAnimation = NO;
     self.blurRadius = 1.0;
     self.duration = 1.0;
-    
 }
 
 - (UIImage *)getBlurredImage:(UIImage *)imageToBlur {

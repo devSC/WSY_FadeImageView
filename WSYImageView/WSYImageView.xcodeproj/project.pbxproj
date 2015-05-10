@@ -16,13 +16,13 @@
 		FEE2EDA91AFE2D510060AC95 /* WSYImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE2EDA81AFE2D510060AC95 /* WSYImageViewTests.m */; };
 		FEE2EDB41AFE2E810060AC95 /* tu1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDB21AFE2E810060AC95 /* tu1.jpg */; };
 		FEE2EDB51AFE2E810060AC95 /* tu2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDB31AFE2E810060AC95 /* tu2.jpg */; };
-		FEE2EDBF1AFE491D0060AC95 /* WSYImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE2EDBE1AFE491D0060AC95 /* WSYImageView.m */; };
 		FEE2EDC11AFE4DC50060AC95 /* tu3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC01AFE4DC50060AC95 /* tu3.jpg */; };
 		FEE2EDC71AFE528F0060AC95 /* tu4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC21AFE528F0060AC95 /* tu4.jpg */; };
 		FEE2EDC81AFE528F0060AC95 /* tu5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC31AFE528F0060AC95 /* tu5.jpg */; };
 		FEE2EDC91AFE528F0060AC95 /* tu6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC41AFE528F0060AC95 /* tu6.jpg */; };
 		FEE2EDCA1AFE528F0060AC95 /* tu7.png in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC51AFE528F0060AC95 /* tu7.png */; };
 		FEE2EDCB1AFE528F0060AC95 /* tu8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEE2EDC61AFE528F0060AC95 /* tu8.jpg */; };
+		FEE2EDDC1AFF1B2D0060AC95 /* WSYImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE2EDDB1AFF1B2D0060AC95 /* WSYImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,14 +51,14 @@
 		FEE2EDA81AFE2D510060AC95 /* WSYImageViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WSYImageViewTests.m; sourceTree = "<group>"; };
 		FEE2EDB21AFE2E810060AC95 /* tu1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu1.jpg; sourceTree = "<group>"; };
 		FEE2EDB31AFE2E810060AC95 /* tu2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu2.jpg; sourceTree = "<group>"; };
-		FEE2EDBD1AFE491D0060AC95 /* WSYImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSYImageView.h; sourceTree = "<group>"; };
-		FEE2EDBE1AFE491D0060AC95 /* WSYImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSYImageView.m; sourceTree = "<group>"; };
 		FEE2EDC01AFE4DC50060AC95 /* tu3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu3.jpg; sourceTree = "<group>"; };
 		FEE2EDC21AFE528F0060AC95 /* tu4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu4.jpg; sourceTree = "<group>"; };
 		FEE2EDC31AFE528F0060AC95 /* tu5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu5.jpg; sourceTree = "<group>"; };
 		FEE2EDC41AFE528F0060AC95 /* tu6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu6.jpg; sourceTree = "<group>"; };
 		FEE2EDC51AFE528F0060AC95 /* tu7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tu7.png; sourceTree = "<group>"; };
 		FEE2EDC61AFE528F0060AC95 /* tu8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tu8.jpg; sourceTree = "<group>"; };
+		FEE2EDDA1AFF1B2D0060AC95 /* WSYImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSYImageView.h; sourceTree = "<group>"; };
+		FEE2EDDB1AFF1B2D0060AC95 /* WSYImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSYImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +100,11 @@
 		FEE2ED8B1AFE2D510060AC95 /* WSYImageView */ = {
 			isa = PBXGroup;
 			children = (
+				FEE2EDD91AFF1B2D0060AC95 /* WSYImageView */,
 				FEE2ED901AFE2D510060AC95 /* AppDelegate.h */,
 				FEE2ED911AFE2D510060AC95 /* AppDelegate.m */,
 				FEE2ED931AFE2D510060AC95 /* ViewController.h */,
 				FEE2ED941AFE2D510060AC95 /* ViewController.m */,
-				FEE2EDBD1AFE491D0060AC95 /* WSYImageView.h */,
-				FEE2EDBE1AFE491D0060AC95 /* WSYImageView.m */,
 				FEE2ED961AFE2D510060AC95 /* Main.storyboard */,
 				FEE2ED991AFE2D510060AC95 /* Images.xcassets */,
 				FEE2EDB21AFE2E810060AC95 /* tu1.jpg */,
@@ -154,6 +153,15 @@
 			children = (
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		FEE2EDD91AFF1B2D0060AC95 /* WSYImageView */ = {
+			isa = PBXGroup;
+			children = (
+				FEE2EDDA1AFF1B2D0060AC95 /* WSYImageView.h */,
+				FEE2EDDB1AFF1B2D0060AC95 /* WSYImageView.m */,
+			);
+			path = WSYImageView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,7 +274,7 @@
 			files = (
 				FEE2ED951AFE2D510060AC95 /* ViewController.m in Sources */,
 				FEE2ED921AFE2D510060AC95 /* AppDelegate.m in Sources */,
-				FEE2EDBF1AFE491D0060AC95 /* WSYImageView.m in Sources */,
+				FEE2EDDC1AFF1B2D0060AC95 /* WSYImageView.m in Sources */,
 				FEE2ED8F1AFE2D510060AC95 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
