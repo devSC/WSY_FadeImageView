@@ -18,6 +18,8 @@
 - (void)ws_setImageWithUrlString:(NSString *)urlString placeholderImage: (UIImage *)placeholder;
 - (void)ws_setImageWithImageName: (NSString *)name placeholderImage: (UIImage *)placeholder;
 
+- (void)removeAllCache;
+- (void)resetView;
 @end
 
 

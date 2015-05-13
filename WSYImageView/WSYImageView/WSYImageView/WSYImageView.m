@@ -7,7 +7,7 @@
 //
 
 #import "WSYImageView.h"
-#import <objc/runtime.h>
+#import "WSYImageCache.h"
 #import <Accelerate/Accelerate.h>
 
 
@@ -342,55 +342,6 @@
 @end
 
 
-@interface WSYImageCache: NSObject
-
-@property (strong, nonatomic)  NSCache *cache;
-+ (WSYImageCache *)sharedImageCache;
-- (void)storeImage:(UIImage *)image forKey:(NSString *)key;
-- (UIImage *)imageWithUrl: (NSString *)urlStr;
-
-
-@end
-
-@implementation WSYImageCache
-
-+ (WSYImageCache *)sharedImageCache {
-    static dispatch_once_t once;
-    static id instance;
-    dispatch_once(&once, ^{
-        instance = [self new];
-    });
-    return instance;
-}
-- (id)init {
-    return [self initWithNamespace:@"default"];
-}
-
-
-- (id)initWithNamespace:(NSString *)ns {
-    if ((self = [super init])) {
-        self.cache = [[NSCache alloc] init];
-        _cache.name = @"WSYImageCache";
-    }
-    
-    return self;
-}
-
-- (BOOL)objectIsExistForKey: (NSString *)key
-{
-    return [_cache objectForKey:key];
-}
-
-- (void)storeImage:(UIImage *)image forKey:(NSString *)key {
-    [_cache setObject:image forKey:key];
-}
-- (UIImage *)imageWithUrl: (NSString *)urlStr
-{
-    return [_cache objectForKey:urlStr];
-}
-
-@end
-
 #pragma mark - WSYImageView
 @interface WSYImageView ()
 
@@ -478,13 +429,18 @@
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             UIImage *image = [[WSYImageCache sharedImageCache] imageWithUrl:imageUrl];
             if (!image) {
+                NSDate* tmpStartData = [NSDate date];
+                //You code here...
+                double deltaTime = [[NSDate date] timeIntervalSinceDate:tmpStartData];
+                
                 NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
+                NSLog(@">>>>>>>>>>cost time = %f ms", deltaTime*1000);
                 image = [UIImage imageWithData:data];
                 if (image) {
                     [self setImage:image animation:YES storeKey:imageUrl];
                 }
             }else {
-                [self setImage:image animation:YES storeKey:imageUrl];
+                [self setImage:image animation:_alwaysAnimation storeKey:imageUrl];
             }
         });
     }else {
@@ -514,6 +470,8 @@
                     else
                         bluredImage = [self getBlurredImage:image];
                     
+                    bluredImage = image;
+
                     //cache
                     [[WSYImageCache sharedImageCache] storeImage:bluredImage forKey:key];
                     
@@ -544,17 +502,20 @@
     self.backImageView = [[UIImageView alloc] initWithFrame:self.bounds];
     [self addSubview:_backImageView];
     //default
-    [self setImageViewContentModel:UIViewContentModeScaleAspectFill];
+    [self setImageViewContentModel:UIViewContentModeScaleToFill];
     self.alwaysAnimation = NO;
     self.blurRadius = 1.0;
-    self.duration = 1.0;
+    self.duration =1.0;
 }
 
 - (UIImage *)getBlurredImage:(UIImage *)imageToBlur {
     CGSize  imageSize = imageToBlur.size;
     return [imageToBlur applyBlurWithCrop:CGRectMake(0,0,imageSize.width,imageSize.height) resize:imageSize blurRadius:_blurRadius tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
 }
-
+- (void)resetView {
+    [self.backImageView setImage:nil];
+    [self.foreImageView setImage:nil];
+}
 
 
 
