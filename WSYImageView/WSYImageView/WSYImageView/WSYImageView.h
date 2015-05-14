@@ -18,8 +18,9 @@
 - (void)ws_setImageWithUrlString:(NSString *)urlString placeholderImage: (UIImage *)placeholder;
 - (void)ws_setImageWithImageName: (NSString *)name placeholderImage: (UIImage *)placeholder;
 
-- (void)removeAllCache;
-- (void)resetView;
+- (void)ws_setImageBlurWithUrlString:(NSString *)urlString placeholderImage:(UIImage *)placeholder; //blur
+- (void)ws_setImageBlurWithImageName: (NSString *)name placeholderImage: (UIImage *)placeholder;//blur
+
 @end
 
 
