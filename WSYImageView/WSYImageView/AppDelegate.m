@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "SDImageCache.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    SDImageCache* imgCache = [SDImageCache sharedImageCache];
+    imgCache.maxCacheAge = 7 * 24 * 3600;
+    imgCache.maxCacheSize = 100 * 1024 * 1024;
+    imgCache.maxMemoryCost = 10 * 1024 * 1024; //7
+
     return YES;
 }
 
