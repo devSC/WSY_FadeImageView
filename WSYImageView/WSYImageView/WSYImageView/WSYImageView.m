@@ -546,7 +546,7 @@
     //default
     [self setImageViewContentModel:UIViewContentModeScaleAspectFill];
     self.alwaysAnimation = NO;
-    self.blurRadius = 1.0;
+    self.blurRadius = 3.0;
     self.duration = 1.0;
 }
 
