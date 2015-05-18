@@ -29,7 +29,7 @@
 
 @implementation WSYImageView
 {
-    BOOL _animationSwitch;
+    BOOL _isBlur;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -69,6 +69,7 @@
         [self.foreImageView setImage:placeholder];
         self.placeholder = placeholder;
     }
+    _isBlur = YES;
     [self setImageUrl:urlString];
     
 }
@@ -79,6 +80,7 @@
         [self.foreImageView setImage:placeholder];
         self.placeholder = placeholder;
     }
+    _isBlur = YES;
     [self setImageName:name];
     
 }
@@ -92,8 +94,8 @@
 
 - (void)ws_setImageWithUrlString:(NSString *)urlString placeholderImage: (UIImage *)placeholder
 {
-    //    [self resetView];
     self.placeholder = placeholder;
+    [self.foreImageView setImage:placeholder];
     [self setImageUrl:urlString];
 }
 
@@ -119,7 +121,7 @@
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageUrl];;
         if (image) {
-            [self setImage:image animation:NO];
+            [self setImage:image animation:_alwaysAnimation];
             return;
         }
         {
@@ -148,7 +150,7 @@
                 }];
                 [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
             } else {
-                [self setImage:_placeholder animation:NO];
+                [self setImage:_placeholder animation:_alwaysAnimation];
             }
         }
     });
@@ -162,47 +164,43 @@
         });
         return;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.backImageView setAlpha:1.0];
-        [self.foreImageView setAlpha:0.0];
-        [self.backImageView setImage:self.foreImageView.image];
-        [self.foreImageView setImage:image];
-        [UIView animateWithDuration:_duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            [self.backImageView setAlpha:0.0];
-            [self.foreImageView setAlpha:1.0];
-        } completion:^(BOOL finished) {
-            //                _animationSwitch = NO;
-        }];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.backImageView setAlpha:1.0];
+//        [self.foreImageView setAlpha:0.0];
+//        [self.backImageView setImage:self.foreImageView.image];
+//        [self.foreImageView setImage:image];
+//        [UIView animateWithDuration:_duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//            [self.backImageView setAlpha:0.0];
+//            [self.foreImageView setAlpha:1.0];
+//        } completion:^(BOOL finished) {
+//            //                _animationSwitch = NO;
+//        }];
+//    });
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+         UIImage* bluredImage = nil;
+        if (_isBlur) {
+            if(image == nil)
+                bluredImage = [self getBlurredImage:_placeholder];
+            else
+                bluredImage = [self getBlurredImage:image];
+        }else {
+            bluredImage = image;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.backImageView setAlpha:1.0];
+            [self.foreImageView setAlpha:0.0];
+            [self.backImageView setImage:self.foreImageView.image];
+            [self.foreImageView setImage:bluredImage];
+            [UIView animateWithDuration:_duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                [self.backImageView setAlpha:0.0];
+                [self.foreImageView setAlpha:1.0];
+            } completion:^(BOOL finished) {
+
+            }];
+        });
     });
-//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//        dispatch_after(popTime, dispatch_get_main_queue(),^(void) {
-//                dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//                    /*
-//                     UIImage* bluredImage = nil;
-//                     if(image == nil)
-//                     bluredImage = [self getBlurredImage:_placeholder];
-//                     else
-//                     bluredImage = [self getBlurredImage:image];
-//                     bluredImage = image;
-//                     */
-//                    
-//                    //cache
-//                    //                    [[WSYImageCache sharedImageCache] storeImage:bluredImage forKey:key];
-//                    
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        [self.backImageView setAlpha:1.0];
-//                        [self.foreImageView setAlpha:0.0];
-//                        [self.backImageView setImage:self.foreImageView.image];
-//                        [self.foreImageView setImage:image];
-//                        [UIView animateWithDuration:_duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-//                            [self.backImageView setAlpha:0.0];
-//                            [self.foreImageView setAlpha:1.0];
-//                        } completion:^(BOOL finished) {
-//                            _animationSwitch = NO;
-//                        }];
-//                    });
-//                });
-//        });
 }
 
 #pragma mark - init
@@ -221,9 +219,9 @@
     [self setImageViewContentModel:UIViewContentModeScaleAspectFill];
     self.foreImageView.layer.masksToBounds = YES;
     self.backImageView.layer.masksToBounds = YES;
-    self.alwaysAnimation = NO;
+    self.alwaysAnimation = YES;
     self.blurRadius = 3.;
-    self.duration =1.0;
+    self.duration =1.;
 }
 
 - (UIImage *)getBlurredImage:(UIImage *)imageToBlur {
