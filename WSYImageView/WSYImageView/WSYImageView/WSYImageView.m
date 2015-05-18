@@ -12,7 +12,9 @@
 #import "UIImage+imageEffects.h"
 #import "SDWebImageDownloader.h"
 #import "SDWebImageManager.h"
-
+#import "UIImageView+WebCache.h"
+#import "UIView+WebCacheOperation.h"
+#import "SDWebImageCompat.h"
 
 #pragma mark - WSYImageView
 @interface WSYImageView ()
@@ -68,7 +70,7 @@
         self.placeholder = placeholder;
     }
     [self setImageUrl:urlString];
-
+    
 }
 
 - (void)ws_setImageBlurWithImageName: (NSString *)name placeholderImage: (UIImage *)placeholder
@@ -78,7 +80,7 @@
         self.placeholder = placeholder;
     }
     [self setImageName:name];
-
+    
 }
 
 - (void)ws_setImageWithImageName: (NSString *)name placeholderImage: (UIImage *)placeholder
@@ -90,8 +92,7 @@
 
 - (void)ws_setImageWithUrlString:(NSString *)urlString placeholderImage: (UIImage *)placeholder
 {
-//    [self resetView];
-    [self.foreImageView setImage:placeholder];
+    //    [self resetView];
     self.placeholder = placeholder;
     [self setImageUrl:urlString];
 }
@@ -100,120 +101,128 @@
 {
     if (_imageName != imageName) {
         _imageName = imageName;
-        [self setImage:[UIImage imageNamed:imageName] animation:YES storeKey:imageName];
+        [self setImage:[UIImage imageNamed:imageName] animation:YES];
     }else {
         UIImage *image = [[WSYImageCache sharedImageCache] imageWithUrl:imageName];
         if (image) {
-            [self setImage:image animation:_alwaysAnimation storeKey:imageName];
+            [self setImage:image animation:_alwaysAnimation];
         }
     }
-
+    
 }
+- (void)ws_cancelCurrentImageLoad {
+    [self sd_cancelImageLoadOperationWithKey:@"UIImageViewImageLoad"];
+}
+
 - (void)setImageUrl:(NSString *)imageUrl
 {
-    if (_imageUrl != imageUrl) {
-        _imageUrl = imageUrl;
-        
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            UIImage *image = [[WSYImageCache sharedImageCache] imageWithUrl:imageUrl];
-            if (!image) {
-                NSDate* tmpStartData = [NSDate date];
-                //You code here...
-//                [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                // progression tracking code
-//            }
-//            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-//                if (image) {
-//                    // do something with image
-//                }
-//            }];
-//            options:<#(SDWebImageDownloaderOptions)#>
-//            progress:<#^(NSInteger receivedSize, NSInteger expectedSize)progressBlock#>
-//            completed:<#^(UIImage *image, NSData *data, NSError *error, BOOL finished)completedBlock#>
-
-                SDWebImageManager *manager = [SDWebImageManager sharedManager];
-                double deltaTime = [[NSDate date] timeIntervalSinceDate:tmpStartData];
-                [manager downloadImageWithURL:[NSURL URLWithString:imageUrl]
-                                      options:0
-                                     progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                         // progression tracking code
-                                     }
-                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                                        if (image) {
-                                            // do something with image
-                                            NSLog(@">>>>>>>>>>cost time = %f ms", deltaTime*1000);
-                                            [self setImage:image animation:YES storeKey:imageUrl];
-                                        }
-                                    }];
-                
-                
-//                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
-            }else {
-                [self setImage:image animation:_alwaysAnimation storeKey:imageUrl];
-            }
-        });
-    }else {
-        UIImage *image = [[WSYImageCache sharedImageCache] imageWithUrl:imageUrl];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageUrl];;
         if (image) {
-            [self setImage:image animation:_alwaysAnimation storeKey:imageUrl];
+            [self setImage:image animation:NO];
+            return;
         }
-    }
+        {
+            [self ws_cancelCurrentImageLoad];
+            dispatch_main_async_safe(^{
+                self.foreImageView.image = _placeholder;
+            });
+            
+            if (imageUrl) {
+                __weak UIImageView *wself = self.foreImageView;
+                __weak __typeof(self) weakSelf = self;
+                
+                id <SDWebImageOperation> operation = [SDWebImageManager.sharedManager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                    if (!wself) return;
+                    dispatch_main_sync_safe(^{
+                        if (!wself) return;
+                        if (image) {
+                            //                        wself.image = image;
+                            [weakSelf setImage:image animation:YES];
+                            [wself setNeedsLayout];
+                        } else {
+                            [weakSelf setImage:_placeholder animation:NO];
+                            [wself setNeedsLayout];
+                        }
+                    });
+                }];
+                [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
+            } else {
+                [self setImage:_placeholder animation:NO];
+            }
+        }
+    });
 }
 
-- (void)setImage: (UIImage *)image animation: (BOOL)animation storeKey: (NSString *)key
+- (void)setImage: (UIImage *)image animation: (BOOL)animation
 {
     if (!animation) {
-        [self.foreImageView setImage:image];
+        dispatch_main_sync_safe(^{
+            [self.foreImageView setImage:image];
+        });
         return;
     }
-    if (!_animationSwitch) {
-        double delayInSeconds = 0.1;
-        _animationSwitch = YES;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(),^(void) {
-            @autoreleasepool {
-                dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                    UIImage* bluredImage = nil;
-                    if(image == nil)
-                        bluredImage = [self getBlurredImage:_placeholder];
-                    else
-                        bluredImage = [self getBlurredImage:image];
-                    
-                    bluredImage = image;
-
-                    //cache
-                    [[WSYImageCache sharedImageCache] storeImage:bluredImage forKey:key];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.backImageView setAlpha:1.0];
-                        [self.foreImageView setAlpha:0.0];
-                        [self.backImageView setImage:self.foreImageView.image];
-                        [self.foreImageView setImage:bluredImage];
-                        [UIView animateWithDuration:_duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                            [self.backImageView setAlpha:0.0];
-                            [self.foreImageView setAlpha:1.0];
-                        } completion:^(BOOL finished) {
-                            _animationSwitch = NO;
-                        }];
-                    });
-                });
-            }
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.backImageView setAlpha:1.0];
+        [self.foreImageView setAlpha:0.0];
+        [self.backImageView setImage:self.foreImageView.image];
+        [self.foreImageView setImage:image];
+        [UIView animateWithDuration:_duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [self.backImageView setAlpha:0.0];
+            [self.foreImageView setAlpha:1.0];
+        } completion:^(BOOL finished) {
+            //                _animationSwitch = NO;
+        }];
+    });
+//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//        dispatch_after(popTime, dispatch_get_main_queue(),^(void) {
+//                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//                    /*
+//                     UIImage* bluredImage = nil;
+//                     if(image == nil)
+//                     bluredImage = [self getBlurredImage:_placeholder];
+//                     else
+//                     bluredImage = [self getBlurredImage:image];
+//                     bluredImage = image;
+//                     */
+//                    
+//                    //cache
+//                    //                    [[WSYImageCache sharedImageCache] storeImage:bluredImage forKey:key];
+//                    
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self.backImageView setAlpha:1.0];
+//                        [self.foreImageView setAlpha:0.0];
+//                        [self.backImageView setImage:self.foreImageView.image];
+//                        [self.foreImageView setImage:image];
+//                        [UIView animateWithDuration:_duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//                            [self.backImageView setAlpha:0.0];
+//                            [self.foreImageView setAlpha:1.0];
+//                        } completion:^(BOOL finished) {
+//                            _animationSwitch = NO;
+//                        }];
+//                    });
+//                });
+//        });
 }
 
 #pragma mark - init
 - (void)setUp
 {
     self.foreImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    self.foreImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
     [self addSubview:_foreImageView];
     
     self.backImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    self.backImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
     [self addSubview:_backImageView];
     //default
-    [self setImageViewContentModel:UIViewContentModeScaleToFill];
+    [self setImageViewContentModel:UIViewContentModeScaleAspectFill];
+    self.foreImageView.layer.masksToBounds = YES;
+    self.backImageView.layer.masksToBounds = YES;
     self.alwaysAnimation = NO;
-    self.blurRadius = 1.0;
+    self.blurRadius = 3.;
     self.duration =1.0;
 }
 

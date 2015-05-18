@@ -10,8 +10,8 @@
 
 @interface WSYImageView : UIView
 
-@property (assign, nonatomic) NSInteger duration; //default is 0.3
-@property (assign, nonatomic) NSInteger blurRadius; //default is 1
+@property (assign, nonatomic) NSInteger duration; //default is 1.0s
+@property (assign, nonatomic) NSInteger blurRadius; //default is 3.0
 @property (assign, nonatomic) UIViewContentMode imageViewContentModel; //default is UIViewContentModeScaleAspectFill
 @property (assign, nonatomic) BOOL alwaysAnimation; //default is no just for first set
 
